@@ -71,12 +71,9 @@
                     method: "GET"
                 }).then(function (responseUV) {
                     // check the response
-                    console.log(responseUV.value);
                     console.log(responseUV);
-                    // get UV index from responseUV
-                    let uvIndex = responseUV.value;
                     // attach uvIndex to html 
-                    $(".uv-index").text("UV Index: " + uvIndex);
+                    $(".uv-index").text("UV Index: " + responseUV.value);
                 });
 
                 // attach info to html
