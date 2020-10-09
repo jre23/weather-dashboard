@@ -53,18 +53,40 @@
                 // check the response
                 console.log(response);
 
-                let tempK = response.main.temp;
                 // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
-                let tempF = (tempK - 273.15) * 1.80 + 32;
+                let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
+                // get lat and lon coordinates for the uv index 
+                let lat = response.coord.lat;
+                let lon = response.coord.lon;
+                console.log(lat + " lats");
+                console.log(lon + " long");
+
+                // build the URL for the second ajax call for the UV index using the lat and lon coordinates of the user input city
+                let UVIndexQueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat +
+                    "&lon=" + lon + "&appid=" + APIKey;
+
+                // make another AJAX call for the UV index
+                $.ajax({
+                    url: UVIndexQueryURL,
+                    method: "GET"
+                }).then(function (responseUV) {
+                    // check the response
+                    console.log(responseUV.value);
+                    console.log(responseUV);
+                    // get UV index from responseUV
+                    let uvIndex = responseUV.value;
+                    // attach uvIndex to html 
+                    $(".uv-index").text("UV Index: " + uvIndex);
+                });
 
                 // attach info to html
                 $(".city-date").text(response.name + " (" + (moment().format(
                     "MMMM Do YYYY") + ")"));
-                $(".temperature").text("Temp in K: " + response.main.temp + " Temp in F: " +
-                    tempF);
-                $(".humidity").text("Humidity: " + response.main.humidity);
-                $(
-                    ".wind-speed").text("Wind speed: " + response.wind.speed);
+                $(".temperature").text("Temperature " +
+                    tempF + "\u00B0F");
+                $(".humidity").text("Humidity: " + response.main.humidity + "%");
+                // convert meters/second to miles/hour with 2.237
+                $(".wind-speed").text("Wind speed: " + (response.wind.speed) * 2.237 + " MPH");
             });
         });
     </script>
