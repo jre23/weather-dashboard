@@ -8,7 +8,35 @@
 </head>
 
 <body>
+    <h1>Search for a City:</h1>
 
+    <!-- this form is used to get the user input -->
+    <form id="city-form">
+        <label for="city-input">Search for a city</label>
+        <input type="text" id="city-input"><br>
+
+        <!-- this button will trigger our AJAX call -->
+        <input id="find-city" type="submit" value="City Search">
+    </form>
+
+    <!-- Weather data placeholders -->
+    <h1 class="city date"></h1>
+    <div class="temperature"></div>
+    <div class="humidity"></div>
+    <div class="wind-speed"></div>
+    <div class="uv-index"></div>
+
+    <!-- jQuery library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        // OpenWeatherApp API key 
+        let userInputCity = $("#city-input").val();
+        var APIKey = "870109d2706d7781ec3e7e2c0c95b193";
+
+        // Build the URL for the ajax call
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" + APIKey;
+    </script>
 </body>
 
 </html>
