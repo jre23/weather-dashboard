@@ -20,7 +20,7 @@
     </form>
 
     <!-- Weather data placeholders -->
-    <h1 class="city date"></h1>
+    <h1 class="city-date"></h1>
     <div class="temperature"></div>
     <div class="humidity"></div>
     <div class="wind-speed"></div>
@@ -28,14 +28,45 @@
 
     <!-- jQuery library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     <script type="text/javascript">
-        // OpenWeatherApp API key 
-        let userInputCity = $("#city-input").val();
-        var APIKey = "870109d2706d7781ec3e7e2c0c95b193";
+        $("#find-city").on("click", function (event) {
+            // Preventing the submit button from trying to submit the form
+            // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+            event.preventDefault();
 
-        // Build the URL for the ajax call
-        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" + APIKey;
+            // OpenWeatherApp API key 
+            let userInputCity = $("#city-input").val();
+            let APIKey = "870109d2706d7781ec3e7e2c0c95b193";
+
+            // Build the URL for the ajax call
+            let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" +
+                APIKey;
+
+            // AJAX call
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                // check the response
+                console.log(response);
+
+                let tempK = response.main.temp;
+                // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
+                let tempF = (tempK - 273.15) * 1.80 + 32;
+
+                // attach info to html
+                $(".city-date").text(response.name + " (" + (moment().format(
+                    "MMMM Do YYYY") + ")"));
+                $(".temperature").text("Temp in K: " + response.main.temp + " Temp in F: " +
+                    tempF);
+                $(".humidity").text("Humidity: " + response.main.humidity);
+                $(
+                    ".wind-speed").text("Wind speed: " + response.wind.speed);
+            });
+        });
     </script>
 </body>
 
