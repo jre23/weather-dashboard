@@ -25,6 +25,8 @@
     <div class="humidity"></div>
     <div class="wind-speed"></div>
     <div class="uv-index"></div>
+    <img class="icon"></>
+
 
     <!-- jQuery library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -37,29 +39,27 @@
             // We're optionally using a form so the user may hit Enter to search instead of clicking the button
             event.preventDefault();
 
-            // OpenWeatherApp API key 
+            // get userInputCity
             let userInputCity = $("#city-input").val();
+            // OpenWeatherApp API key 
             let APIKey = "870109d2706d7781ec3e7e2c0c95b193";
 
             // Build the URL for the ajax call
             let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" +
                 APIKey;
-
-            // AJAX call
+            console.log(queryURL + " query url");
+            // AJAX call for current weather data
             $.ajax({
                 url: queryURL,
                 method: "GET"
             }).then(function (response) {
                 // check the response
-                console.log(response);
-
+                console.log(response + " current weather data");
                 // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
                 let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
                 // get lat and lon coordinates for the uv index 
                 let lat = response.coord.lat;
                 let lon = response.coord.lon;
-                console.log(lat + " lats");
-                console.log(lon + " long");
 
                 // build the URL for the second ajax call for the UV index using the lat and lon coordinates of the user input city
                 let UVIndexQueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat +
@@ -71,10 +71,32 @@
                     method: "GET"
                 }).then(function (responseUV) {
                     // check the response
-                    console.log(responseUV);
+                    console.log(responseUV + " uv data");
                     // attach uvIndex to html 
                     $(".uv-index").text("UV Index: " + responseUV.value);
                 });
+
+                // build the URL for the third ajax call for the 5 day weather forecast
+                let forecastQueryURL = "http://api.openweathermap.org/data/2.5/onecall?lat=" + lat +
+                    "&lon=" + lon + "&exclude=current,minutely,hourly&appid=" + APIKey;
+
+                console.log(forecastQueryURL + " forecast url");
+
+                https
+                    : //api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&exclude=hourly,daily&appid={API key}
+
+                    // make another AJAX call for the 5 day weather forecast
+                    $.ajax({
+                        url: forecastQueryURL,
+                        method: "GET"
+                    }).then(function (responseForecast) {
+                        // check the response
+                        console.log(responseForecast);
+                        console.log(responseForecast.daily[1].weather[0].icon);
+                        let icon = responseForecast.daily[1].weather[0].icon;
+                        $(".icon").attr("src", "http://openweathermap.org/img/wn/" + icon +
+                            "@2x.png");
+                    })
 
                 // attach info to html
                 $(".city-date").text(response.name + " (" + (moment().format(
@@ -85,6 +107,7 @@
                 // convert meters/second to miles/hour with 2.237
                 $(".wind-speed").text("Wind speed: " + (response.wind.speed) * 2.237 + " MPH");
             });
+
         });
     </script>
 </body>
