@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+    <style>
+        img {
+            height: 50px;
+            width: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,7 +18,7 @@
 
     <!-- this form is used to get the user input -->
     <form id="city-form">
-        <label for="city-input">Search for a city</label>
+        <label for="city-input">Search for a City:</label>
         <input type="text" id="city-input"><br>
 
         <!-- this button will trigger our AJAX call -->
@@ -25,10 +31,7 @@
     <div class="humidity"></div>
     <div class="wind-speed"></div>
     <div class="uv-index"></div>
-    <img class="icon"></>
-    <div class="unix-converted"></div>
-
-
+    <div class="forecast"></div>
 
     <!-- jQuery library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -40,13 +43,11 @@
             // Preventing the submit button from trying to submit the form
             // We're optionally using a form so the user may hit Enter to search instead of clicking the button
             event.preventDefault();
-
             // get userInputCity
             let userInputCity = $("#city-input").val();
             // OpenWeatherApp API key 
             let APIKey = "870109d2706d7781ec3e7e2c0c95b193";
-
-            // Build the URL for the ajax call
+            // Build the URL for the AJAX call
             let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" +
                 APIKey;
             console.log(queryURL + " query url");
@@ -59,51 +60,43 @@
                 console.log(response + " current weather data");
                 // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
                 let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
-                // get lat and lon coordinates for the uv index 
+                // get lat and lon coordinates for the second AJAX call for uv index and forecast 
                 let lat = response.coord.lat;
                 let lon = response.coord.lon;
 
-                // build the URL for the second ajax call for the UV index using the lat and lon coordinates of the user input city
-                let UVIndexQueryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat +
-                    "&lon=" + lon + "&appid=" + APIKey;
-
-                // make another AJAX call for the UV index
-                $.ajax({
-                    url: UVIndexQueryURL,
-                    method: "GET"
-                }).then(function (responseUV) {
-                    // check the response
-                    console.log(responseUV + " uv data");
-                    // attach uvIndex to html 
-                    $(".uv-index").text("UV Index: " + responseUV.value);
-                });
-
-                // build the URL for the third ajax call for the 5 day weather forecast
+                // build the URL for the second AJAX call
                 let forecastQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat +
                     "&lon=" + lon + "&exclude=current,minutely,hourly&appid=" + APIKey;
-                // make another AJAX call for the 5 day weather forecast
+                // make second AJAX call for the uv index and 5 day weather forecast
                 $.ajax({
                     url: forecastQueryURL,
                     method: "GET"
                 }).then(function (responseForecast) {
                     // check the response
                     console.log(responseForecast);
-                    let icon = responseForecast.daily[1].weather[0].icon;
-                    $(".icon").attr("src", "http://openweathermap.org/img/wn/" + icon +
-                        "@2x.png");
+
+                    // get the uv index 
+                    $(".uv-index").text("UV Index: " + responseForecast.daily[0].uvi);
+
                     for (let i = 1; i < 6; i++) {
                         // the response returns the date and time in unix. these next couple lines of code convert it to a standard format
                         let dateUnix = responseForecast.daily[i].dt * 1000;
-                        let newDate = new Date(dateUnix).toLocaleDateString("en-US");
-                        console.log(newDate + " new date");
-                        $(".unix-converted").append(newDate + " ");
+                        let dateUnixConverted = new Date(dateUnix).toLocaleDateString("en-US");
+                        console.log(dateUnixConverted + " new date");
+                        $(".forecast").append(dateUnixConverted + " ");
+                        // get icon 
+                        let forecastIcon = responseForecast.daily[i].weather[0].icon;
+                        let iconImg = $("<img>");
+                        iconImg.attr("src", "http://openweathermap.org/img/wn/" + forecastIcon +
+                            "@2x.png");
+                        $(".forecast").append(iconImg);
                     }
 
                 })
 
                 // attach info to html
                 $(".city-date").text(response.name + " (" + (moment().format(
-                    "MMMM Do YYYY") + ")"));
+                    "l") + ")"));
                 $(".temperature").text("Temperature " +
                     tempF + "\u00B0F");
                 $(".humidity").text("Humidity: " + response.main.humidity + "%");
