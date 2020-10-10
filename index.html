@@ -9,6 +9,7 @@
         img {
             height: 50px;
             width: 50px;
+
         }
     </style>
 </head>
@@ -61,10 +62,15 @@
                 let currentDateMilliseconds = currentDateUnix * 1000;
                 let currentDateConverted = new Date(currentDateMilliseconds).toLocaleDateString(
                     "en-US");
+                // get icon
+                let currentWeatherIcon = response.weather[0].icon;
+                console.log(currentWeatherIcon);
 
-                // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
+
+
+                // get current temperature. the response returns temperature in Kelvin. Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
                 let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
-                // get lat and lon coordinates for the second AJAX call for uv index and forecast 
+                // get lat and lon coordinates for the second AJAX call for the uv index and forecast 
                 let lat = response.coord.lat;
                 let lon = response.coord.lon;
 
@@ -78,33 +84,41 @@
                 }).then(function (responseForecast) {
                     // check the response
                     console.log(responseForecast);
-
                     // get the uv index 
                     $(".uv-index").text("UV Index: " + responseForecast.daily[0].uvi);
-
+                    // clear current forecast information before adding new information 
+                    $(".forecast").empty();
                     for (let i = 1; i < 6; i++) {
-                        // the response returns the date and time in unix. these next couple lines of code convert it to a standard format
-                        let dateUnix = responseForecast.daily[i].dt * 1000;
-                        let dateUnixConverted = new Date(dateUnix).toLocaleDateString("en-US");
-                        console.log(dateUnixConverted + " new date");
-                        $(".forecast").append(dateUnixConverted + " ");
+                        // get date
+                        $(".forecast").append(new Date(responseForecast.daily[i].dt *
+                                1000)
+                            .toLocaleDateString("en-US") + "<br>");
                         // get icon 
-                        let forecastIcon = responseForecast.daily[i].weather[0].icon;
-                        let iconImg = $("<img>");
-                        iconImg.attr("src", "http://openweathermap.org/img/wn/" + forecastIcon +
-                            "@2x.png");
-                        $(".forecast").append(iconImg);
+                        $(".forecast").append($("<img>").attr("src",
+                            "http://openweathermap.org/img/wn/" + responseForecast
+                            .daily[i].weather[0].icon +
+                            "@2x.png"));
+                        // get temperature
+                        $(".forecast").append("<br>Temp: " + ((responseForecast.daily[i].temp
+                                .day - 273.15) *
+                            1.80 + 32).toFixed(1) + " \u00B0F<br>");
+                        // get humidity
+                        $(".forecast").append("Humidity: " + responseForecast.daily[i]
+                            .humidity + "%<br>");
                     }
-
                 })
 
                 // attach info to html
                 $(".city-date").text(response.name + " (" + currentDateConverted + ")");
+                $(".city-date")
+                    .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" +
+                        currentWeatherIcon +
+                        "@2x.png"));
                 $(".temperature").text("Temperature " +
                     tempF + "\u00B0F");
                 $(".humidity").text("Humidity: " + response.main.humidity + "%");
-                // convert meters/second to miles/hour with 2.237
-                $(".wind-speed").text("Wind speed: " + ((response.wind.speed) * 2.237).toFixed(1) +
+                // the response returns wind speed in meters/second. convert meters/second to miles/hour with 2.237
+                $(".wind-speed").text("Wind Speed: " + ((response.wind.speed) * 2.237).toFixed(1) +
                     " MPH");
             });
 
