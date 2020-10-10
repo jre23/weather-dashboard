@@ -38,7 +38,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $("#find-city").on("click", function (event) {
+        $("#find-city").on("click", createWeatherData);
+
+        function createWeatherData(event) {
             // Preventing the submit button from trying to submit the form
             // We're optionally using a form so the user may hit Enter to search instead of clicking the button
             event.preventDefault();
@@ -64,15 +66,24 @@
                     "en-US");
                 // get icon
                 let currentWeatherIcon = response.weather[0].icon;
-                console.log(currentWeatherIcon);
-
-
-
                 // get current temperature. the response returns temperature in Kelvin. Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
                 let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
                 // get lat and lon coordinates for the second AJAX call for the uv index and forecast 
                 let lat = response.coord.lat;
                 let lon = response.coord.lon;
+
+                // attach info to html
+                $(".city-date").text(response.name + " (" + currentDateConverted + ")");
+                $(".city-date")
+                    .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" +
+                        currentWeatherIcon +
+                        "@2x.png"));
+                $(".temperature").text("Temperature " +
+                    tempF + "\u00B0F");
+                $(".humidity").text("Humidity: " + response.main.humidity + "%");
+                // the response returns wind speed in meters/second. convert meters/second to miles/hour with 2.237
+                $(".wind-speed").text("Wind Speed: " + ((response.wind.speed) * 2.237).toFixed(1) +
+                    " MPH");
 
                 // build the URL for the second AJAX call
                 let forecastQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat +
@@ -89,40 +100,26 @@
                     // clear current forecast information before adding new information 
                     $(".forecast").empty();
                     for (let i = 1; i < 6; i++) {
-                        // get date
+                        // get date and append
                         $(".forecast").append(new Date(responseForecast.daily[i].dt *
                                 1000)
                             .toLocaleDateString("en-US") + "<br>");
-                        // get icon 
+                        // get icon and append
                         $(".forecast").append($("<img>").attr("src",
                             "http://openweathermap.org/img/wn/" + responseForecast
                             .daily[i].weather[0].icon +
                             "@2x.png"));
-                        // get temperature
+                        // get temperature and append
                         $(".forecast").append("<br>Temp: " + ((responseForecast.daily[i].temp
                                 .day - 273.15) *
                             1.80 + 32).toFixed(1) + " \u00B0F<br>");
-                        // get humidity
+                        // get humidity and append
                         $(".forecast").append("Humidity: " + responseForecast.daily[i]
                             .humidity + "%<br>");
                     }
-                })
-
-                // attach info to html
-                $(".city-date").text(response.name + " (" + currentDateConverted + ")");
-                $(".city-date")
-                    .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" +
-                        currentWeatherIcon +
-                        "@2x.png"));
-                $(".temperature").text("Temperature " +
-                    tempF + "\u00B0F");
-                $(".humidity").text("Humidity: " + response.main.humidity + "%");
-                // the response returns wind speed in meters/second. convert meters/second to miles/hour with 2.237
-                $(".wind-speed").text("Wind Speed: " + ((response.wind.speed) * 2.237).toFixed(1) +
-                    " MPH");
+                });
             });
-
-        });
+        }
     </script>
 </body>
 
