@@ -25,6 +25,7 @@
         <!-- this button will trigger our AJAX call -->
         <input id="find-city" type="submit" value="City Search">
     </form>
+    <div class="search-history"></div>
 
     <!-- Weather data placeholders -->
     <h1 class="city-date"></h1>
@@ -45,7 +46,27 @@
             // We're optionally using a form so the user may hit Enter to search instead of clicking the button
             event.preventDefault();
             // get userInputCity
-            let userInputCity = $("#city-input").val();
+            let userInputCity = $("#city-input").val().toLowerCase().trim();
+            // if empty is submitted, break out of this function
+            if (userInputCity === "") {
+                return;
+            }
+            // store the city in local storage if not already stored
+            let localStorageBool = false;
+            if (localStorage.length === 0) {
+                localStorage.setItem(0, userInputCity);
+                localStorageBool = true;
+            } else {
+                for (let i = 0; i < localStorage.length; i++) {
+                    if (localStorage.getItem(i) === userInputCity) {
+                        localStorageBool = true;
+                    }
+                }
+            }
+            console.log(localStorage.length);
+            if (!localStorageBool) {
+                localStorage.setItem(localStorage.length, userInputCity);
+            }
             // OpenWeatherApp API key 
             let APIKey = "870109d2706d7781ec3e7e2c0c95b193";
             // Build the URL for the AJAX call
@@ -120,6 +141,13 @@
                 });
             });
         }
+
+        function createSearchHistory() {
+            for (let i = 0; i < localStorage.length; i++)
+                $(".search-history").append(localStorage.getItem(i) + " <br>");
+        }
+
+        createSearchHistory();
     </script>
 </body>
 
