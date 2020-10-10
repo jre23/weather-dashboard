@@ -46,8 +46,7 @@
             if (localStorage.length !== 0 && !$("#city-input").val()) {
                 var userInputCity = localStorage.getItem(localStorage.length - 1);
             } else {
-                // Preventing the submit button from trying to submit the form
-                // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+                // else button must have been clicked
                 event.preventDefault();
                 var userInputCity = $("#city-input").val().toLowerCase().trim();
             }
