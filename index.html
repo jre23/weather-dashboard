@@ -35,8 +35,6 @@
 
     <!-- jQuery library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- https://momentjs.com/ -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     <script type="text/javascript">
         $("#find-city").on("click", function (event) {
@@ -57,7 +55,13 @@
                 method: "GET"
             }).then(function (response) {
                 // check the response
-                console.log(response + " current weather data");
+                console.log(response);
+                // get current date. the response returns the date and time in unix. these next couple lines of code convert it to a standard format
+                let currentDateUnix = response.dt;
+                let currentDateMilliseconds = currentDateUnix * 1000;
+                let currentDateConverted = new Date(currentDateMilliseconds).toLocaleDateString(
+                    "en-US");
+
                 // Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
                 let tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
                 // get lat and lon coordinates for the second AJAX call for uv index and forecast 
@@ -95,8 +99,7 @@
                 })
 
                 // attach info to html
-                $(".city-date").text(response.name + " (" + (moment().format(
-                    "l") + ")"));
+                $(".city-date").text(response.name + " (" + currentDateConverted + ")");
                 $(".temperature").text("Temperature " +
                     tempF + "\u00B0F");
                 $(".humidity").text("Humidity: " + response.main.humidity + "%");
