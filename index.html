@@ -40,14 +40,18 @@
 
     <script type="text/javascript">
         $("#find-city").on("click", createWeatherData);
-
-        function createWeatherData(event) {
-            // Preventing the submit button from trying to submit the form
-            // We're optionally using a form so the user may hit Enter to search instead of clicking the button
-            event.preventDefault();
+        // this function is called either by the click on the search button or when the page is refreshed and there is something in local storage
+        function createWeatherData() {
             // get userInputCity
-            let userInputCity = $("#city-input").val().toLowerCase().trim();
-            // if empty is submitted, break out of this function
+            if (localStorage.length !== 0 && !$("#city-input").val()) {
+                var userInputCity = localStorage.getItem(localStorage.length - 1);
+            } else {
+                // Preventing the submit button from trying to submit the form
+                // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+                event.preventDefault();
+                var userInputCity = $("#city-input").val().toLowerCase().trim();
+            }
+            // if an empty input is submitted, break out of this function
             if (userInputCity === "") {
                 return;
             }
@@ -55,6 +59,7 @@
             let localStorageBool = false;
             if (localStorage.length === 0) {
                 localStorage.setItem(0, userInputCity);
+                createSearchHistory();
                 localStorageBool = true;
             } else {
                 for (let i = 0; i < localStorage.length; i++) {
@@ -63,9 +68,9 @@
                     }
                 }
             }
-            console.log(localStorage.length);
             if (!localStorageBool) {
                 localStorage.setItem(localStorage.length, userInputCity);
+                createSearchHistory();
             }
             // OpenWeatherApp API key 
             let APIKey = "870109d2706d7781ec3e7e2c0c95b193";
@@ -140,14 +145,21 @@
                     }
                 });
             });
+            console.log($("#city-input").val());
+            $("#city-input").val("");
         }
-
+        // create search history list from local storage
         function createSearchHistory() {
-            for (let i = 0; i < localStorage.length; i++)
+            $(".search-history").empty();
+            for (let i = 0; i < localStorage.length; i++) {
                 $(".search-history").append(localStorage.getItem(i) + " <br>");
+            }
         }
-
-        createSearchHistory();
+        // if the page is refreshed, render the search history and weather data for the last item in local storage if local storage is not empty 
+        if (localStorage.length !== 0) {
+            createSearchHistory();
+            createWeatherData();
+        }
     </script>
 </body>
 
