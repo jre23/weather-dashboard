@@ -150,8 +150,12 @@
         // create search history list from local storage
         function createSearchHistory() {
             $(".search-history").empty();
+            let capLetter = "";
+            let newString = "";
             for (let i = 0; i < localStorage.length; i++) {
-                $(".search-history").append(localStorage.getItem(i) + " <br>");
+                capLetter = localStorage.getItem(i)[0].toUpperCase();
+                newString = capLetter + localStorage.getItem(i).slice(1, localStorage.getItem(i).length);
+                $(".search-history").append(newString + "<br>");
             }
         }
         // if the page is refreshed, render the search history and weather data for the last item in local storage if local storage is not empty 
