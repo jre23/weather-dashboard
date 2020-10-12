@@ -1,0 +1,12 @@
+img {
+    height: 50px;
+    width: 50px;
+}
+
+.searchBtn {
+    color: white;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(143, 196, 253);
+    border-radius: 15%;
+}

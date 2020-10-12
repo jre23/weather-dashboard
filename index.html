@@ -5,36 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
-    <style>
-        img {
-            height: 50px;
-            width: 50px;
 
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./Assets/style.css" />
 </head>
 
 <body>
-    <h1>Search for a City:</h1>
+    <header>
+        <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center">
+            <span> Weather Dashboard </span>
+        </nav>
+    </header>
 
-    <!-- this form is used to get the user input -->
-    <form id="city-form">
-        <label for="city-input">Search for a City:</label>
-        <input type="text" id="city-input"><br>
+    <main class="container col-12">
+        <div class="row">
+            <section class="col-3">
+                <h3>Search for a City:</h3>
 
-        <!-- this button will trigger AJAX call -->
-        <input id="find-city" type="submit" value="City Search">
-    </form>
-    <!-- search history buttons. will also trigger AJAX call -->
-    <ul id="search-history"></ul>
+                <!-- this form is used to get the user input -->
+                <form id="city-form" class="col-9">
+                    <input type="text" id="city-input">
 
-    <!-- Weather data placeholders -->
-    <h1 class="city-date"></h1>
-    <div class="temperature"></div>
-    <div class="humidity"></div>
-    <div class="wind-speed"></div>
-    <div class="uv-index"></div>
-    <div class="forecast"></div>
+                    <!-- this button will trigger AJAX call -->
+                    <button id="find-city" type="submit" class="btn btn-primary searchBtn" value="City Search">
+                        <i class="fas fa-search"></i></button>
+                </form>
+                <!-- search history buttons. will also trigger AJAX call -->
+                <ul id="search-history"></ul>
+            </section>
+            <section class="col-9">
+                <div class="row">
+                    <section class="col-12">
+                        <!-- Weather data placeholders -->
+                        <h2 class="city-date"></h2>
+                        <div class="temperature"></div>
+                        <div class="humidity"></div>
+                        <div class="wind-speed"></div>
+                        <div class="uv-index"></div>
+                    </section>
+                    <section class="col-12">
+                        <div class="forecast"></div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </main>
 
     <!-- jQuery library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -49,7 +67,7 @@
             clickBool = true;
             createWeatherData();
         });
-        // this function is called either by the click on the search button or when the page is refreshed and there is something in local storage
+        // this function is called either by the click on the search button, the click on the search history buttons, or when the page is refreshed and there is something in local storage
         function createWeatherData() {
             // get userInputCity
             if (localStorage.length !== 0 && !$("#city-input").val() && !clickBool) {
@@ -58,9 +76,11 @@
                 event.preventDefault();
                 var userInputCity = $("#city-input").val().toLowerCase().trim();
                 console.log("button click: " + event.target.value);
-            } else {
+            } else if (event.target.matches("button") && clickBool) {
                 console.log("button click: " + event.target.getAttribute("data-city"));
                 var userInputCity = event.target.getAttribute("data-city").toLowerCase().trim();;
+            } else {
+                return;
             }
 
             // if an empty input is submitted, break out of this function
@@ -179,6 +199,7 @@
             createWeatherData();
         }
     </script>
+
 </body>
 
 </html>
