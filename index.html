@@ -26,15 +26,16 @@
                 <h3>Search for a City:</h3>
 
                 <!-- this form is used to get the user input -->
-                <form id="city-form" class="col-9">
-                    <input type="text" id="city-input">
+                <form id="city-form" class="col-12">
+                    <input type="text" id="city-input" class="col-8">
 
                     <!-- this button will trigger AJAX call -->
                     <button id="find-city" type="submit" class="btn btn-primary searchBtn" value="City Search">
                         <i class="fas fa-search"></i></button>
                 </form>
                 <!-- search history buttons. will also trigger AJAX call -->
-                <ul id="search-history"></ul>
+                <ul id="search-history" class="list-group"></ul>
+
             </section>
             <section class="col-9">
                 <div class="row">
@@ -76,7 +77,7 @@
                 event.preventDefault();
                 var userInputCity = $("#city-input").val().toLowerCase().trim();
                 console.log("button click: " + event.target.value);
-            } else if (event.target.matches("button") && clickBool) {
+            } else if (event.target.matches("li") && clickBool) {
                 console.log("button click: " + event.target.getAttribute("data-city"));
                 var userInputCity = event.target.getAttribute("data-city").toLowerCase().trim();;
             } else {
@@ -185,13 +186,25 @@
             let capLetter = "";
             let newString = "";
             for (let i = 0; i < localStorage.length; i++) {
-                capLetter = localStorage.getItem(i)[0].toUpperCase();
-                newString = capLetter + localStorage.getItem(i).slice(1, localStorage.getItem(i).length);
-                let cityBtn = $("<button>");
-                cityBtn.attr("data-city", newString);
-                cityBtn.text(newString);
-                $("#search-history").append(cityBtn);
+                newString = capLetters(localStorage.getItem(i));
+                let cityLi = $("<li>");
+                cityLi.attr("data-city", newString);
+                cityLi.addClass("list-group-item");
+                cityLi.text(newString);
+                $("#search-history").append(cityLi);
             }
+        }
+
+        // this function capitalizes the first letter in each word of a string
+        function capLetters(str) {
+            let arrayStr = str.split(" ");
+            let capLetter = "";
+            let newString = "";
+            for (let i = 0; i < arrayStr.length; i++) {
+                capLetter = arrayStr[i][0].toUpperCase();
+                newString += capLetter + arrayStr[i].slice(1, arrayStr[i].length) + " ";
+            }
+            return newString.trim();
         }
         // if the page is refreshed, render the search history and weather data for the last item in local storage if local storage is not empty 
         if (localStorage.length !== 0) {
