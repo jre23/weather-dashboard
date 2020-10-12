@@ -26,12 +26,12 @@
                 <h3>Search for a City:</h3>
 
                 <!-- this form is used to get the user input -->
-                <form id="city-form" class="col-12">
-                    <input type="text" id="city-input" class="col-8">
-
+                <form id="city-form" class="col-12 form-inline pl-0 pb-3">
+                    <input type="text" id="city-input" class="col-8 form-control">
                     <!-- this button will trigger AJAX call -->
                     <button id="find-city" type="submit" class="btn btn-primary searchBtn" value="City Search">
                         <i class="fas fa-search"></i></button>
+
                 </form>
                 <!-- search history buttons. will also trigger AJAX call -->
                 <ul id="search-history" class="list-group"></ul>
@@ -72,13 +72,14 @@
         function createWeatherData() {
             // get userInputCity
             if (localStorage.length !== 0 && !$("#city-input").val() && !clickBool) {
+                console.log("page refreshed");
                 var userInputCity = localStorage.getItem(localStorage.length - 1);
             } else if (event.target.value === "City Search" && clickBool) {
                 event.preventDefault();
                 var userInputCity = $("#city-input").val().toLowerCase().trim();
-                console.log("button click: " + event.target.value);
+                console.log("city search button click: " + event.target.value);
             } else if (event.target.matches("li") && clickBool) {
-                console.log("button click: " + event.target.getAttribute("data-city"));
+                console.log("search history button click: " + event.target.getAttribute("data-city"));
                 var userInputCity = event.target.getAttribute("data-city").toLowerCase().trim();;
             } else {
                 return;
@@ -194,7 +195,6 @@
                 $("#search-history").append(cityLi);
             }
         }
-
         // this function capitalizes the first letter in each word of a string
         function capLetters(str) {
             let arrayStr = str.split(" ");
