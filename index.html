@@ -15,16 +15,16 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center">
+        <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center mb-0">
             <span> Weather Dashboard </span>
         </nav>
     </header>
 
     <main class="container col-12">
         <div class="row">
-            <section class="col-3">
-                <h3>Search for a City:</h3>
-
+            <!-- search input and search history column -->
+            <section class="col-3 bg1">
+                <h4>Search for a City:</h4>
                 <!-- this form is used to get the user input -->
                 <form id="city-form" class="col-12 form-inline pl-0 pb-3">
                     <input type="text" id="city-input" class="col-8 form-control">
@@ -35,20 +35,26 @@
                 </form>
                 <!-- search history buttons. will also trigger AJAX call -->
                 <ul id="search-history" class="list-group"></ul>
-
             </section>
+            <!-- weather data column  -->
             <section class="col-9">
                 <div class="row">
-                    <section class="col-12">
+                    <!-- current day weather data  -->
+                    <section class="col-12 ml-3 mt-3 pb-4 list-group-item">
                         <!-- Weather data placeholders -->
-                        <h2 class="city-date"></h2>
-                        <div class="temperature"></div>
-                        <div class="humidity"></div>
-                        <div class="wind-speed"></div>
-                        <div class="uv-index"></div>
+                        <h2 class="city-date mb-3"></h2>
+                        <div class="temperature mb-3">Temperature: </div>
+                        <div class="humidity mb-3">Humidity: </div>
+                        <div class="wind-speed mb-3">Wind Speed: </div>
+                        <div class="mb-3">UV Index:
+                            <span id="uvIndexBG" class="uv-index badge text-black p-2"></span>
+                        </div>
                     </section>
-                    <section class="col-12">
-                        <div class="forecast"></div>
+                    <!-- forecast weather data  -->
+                    <section class="col-12 mt-4">
+                        <h3>5-Day Forecast:</h3>
+                        <div class="forecast">
+                        </div>
                     </section>
                 </div>
             </section>
@@ -137,7 +143,7 @@
                     .append($("<img>").attr("src", "http://openweathermap.org/img/wn/" +
                         currentWeatherIcon +
                         "@2x.png"));
-                $(".temperature").text("Temperature " +
+                $(".temperature").text("Temperature: " +
                     tempF + "\u00B0F");
                 $(".humidity").text("Humidity: " + response.main.humidity + "%");
                 // the response returns wind speed in meters/second. convert meters/second to miles/hour with 2.237
@@ -154,8 +160,10 @@
                 }).then(function (responseForecast) {
                     // check the response
                     console.log(responseForecast);
-                    // get the uv index 
-                    $(".uv-index").text("UV Index: " + responseForecast.daily[0].uvi);
+                    // get the uv index
+                    $(".uv-index").text(responseForecast.daily[0].uvi);
+                    createUVIndex(responseForecast.daily[0].uvi);
+
                     // clear current forecast information before adding new information 
                     $(".forecast").empty();
                     for (let i = 1; i < 6; i++) {
@@ -180,6 +188,22 @@
             });
             console.log($("#city-input").val());
             $("#city-input").val("");
+        }
+        // create uv index background color
+        function createUVIndex(x) {
+            console.log("test createUVIndex parameter: " + x);
+            //  these if statements change the background color for the UV Index depending on the severity (low: 1-2, moderate: 3-5, high: 6-7, very high: 8-10, extreme: 11+)
+            if (x >= 1.00 && x <= 2.99) {
+                $("#uvIndexBG").attr("style", "background-color:rgb(67, 185, 30);");
+            } else if (x >= 3.00 && x <= 5.99) {
+                $("#uvIndexBG").attr("style", "background-color:rgb(252, 199, 33);");
+            } else if (x >= 6.00 && x <= 7.99) {
+                $("#uvIndexBG").attr("style", "background-color:rgb(251, 116, 27);");
+            } else if (x >= 8.00 && x <= 10.99) {
+                $("#uvIndexBG").attr("style", "background-color:rgb(248, 17, 22);");
+            } else {
+                $("#uvIndexBG").attr("style", "background-color:rgb(134, 111, 255);");
+            }
         }
         // create search history list from local storage
         function createSearchHistory() {
