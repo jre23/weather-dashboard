@@ -22,10 +22,11 @@
         <label for="city-input">Search for a City:</label>
         <input type="text" id="city-input"><br>
 
-        <!-- this button will trigger our AJAX call -->
+        <!-- this button will trigger AJAX call -->
         <input id="find-city" type="submit" value="City Search">
     </form>
-    <div class="search-history"></div>
+    <!-- search history buttons. will also trigger AJAX call -->
+    <ul id="search-history"></ul>
 
     <!-- Weather data placeholders -->
     <h1 class="city-date"></h1>
@@ -39,17 +40,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $("#find-city").on("click", createWeatherData);
+        var clickBool = false;
+        $("#find-city").on("click", function () {
+            clickBool = true;
+            createWeatherData();
+        });
+        $("#search-history").on("click", function () {
+            clickBool = true;
+            createWeatherData();
+        });
         // this function is called either by the click on the search button or when the page is refreshed and there is something in local storage
         function createWeatherData() {
             // get userInputCity
-            if (localStorage.length !== 0 && !$("#city-input").val()) {
+            if (localStorage.length !== 0 && !$("#city-input").val() && !clickBool) {
                 var userInputCity = localStorage.getItem(localStorage.length - 1);
-            } else {
-                // else button must have been clicked
+            } else if (event.target.value === "City Search" && clickBool) {
                 event.preventDefault();
                 var userInputCity = $("#city-input").val().toLowerCase().trim();
+                console.log("button click: " + event.target.value);
+            } else {
+                console.log("button click: " + event.target.getAttribute("data-city"));
+                var userInputCity = event.target.getAttribute("data-city").toLowerCase().trim();;
             }
+
             // if an empty input is submitted, break out of this function
             if (userInputCity === "") {
                 return;
@@ -76,7 +89,6 @@
             // Build the URL for the AJAX call
             let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userInputCity + "&appid=" +
                 APIKey;
-            console.log(queryURL + " query url");
             // AJAX call for current weather data
             $.ajax({
                 url: queryURL,
@@ -149,13 +161,16 @@
         }
         // create search history list from local storage
         function createSearchHistory() {
-            $(".search-history").empty();
+            $("#search-history").empty();
             let capLetter = "";
             let newString = "";
             for (let i = 0; i < localStorage.length; i++) {
                 capLetter = localStorage.getItem(i)[0].toUpperCase();
                 newString = capLetter + localStorage.getItem(i).slice(1, localStorage.getItem(i).length);
-                $(".search-history").append(newString + "<br>");
+                let cityBtn = $("<button>");
+                cityBtn.attr("data-city", newString);
+                cityBtn.text(newString);
+                $("#search-history").append(cityBtn);
             }
         }
         // if the page is refreshed, render the search history and weather data for the last item in local storage if local storage is not empty 
