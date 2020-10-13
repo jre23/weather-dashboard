@@ -12,11 +12,13 @@ The goal for this project was to build a weather dashboard using the [OpenWeathe
 
 ## Screenshots:
 
-![weather dashboard screenshot 1](https://user-images.githubusercontent.com/69170823/95823077-dd01f500-0ce1-11eb-9d17-702105428a04.png)
+![weather dashboard screenshot 1](https://user-images.githubusercontent.com/69170823/95824653-89dd7180-0ce4-11eb-94d8-a2696d4198df.png)
 
-![weather dashboard screenshot 2](https://user-images.githubusercontent.com/69170823/95823200-0884df80-0ce2-11eb-91d7-f835d756f647.png)
+![weather dashboard screenshot 2](https://user-images.githubusercontent.com/69170823/95823077-dd01f500-0ce1-11eb-9d17-702105428a04.png)
 
-![weather dashboard screenshot 3](https://user-images.githubusercontent.com/69170823/95823282-26eadb00-0ce2-11eb-9f80-8514bebcbed9.png)
+![weather dashboard screenshot 3](https://user-images.githubusercontent.com/69170823/95823200-0884df80-0ce2-11eb-91d7-f835d756f647.png)
+
+![weather dashboard screenshot 4](https://user-images.githubusercontent.com/69170823/95823282-26eadb00-0ce2-11eb-9f80-8514bebcbed9.png)
 
 ## Installation
 
