@@ -8,7 +8,7 @@ The goal for this project was to build a weather dashboard using the [OpenWeathe
 
 [GitHub repo](https://github.com/jre23/weather-dashboard)
 
-[Deployed on GitHub pages](https://jre23.github.io/weather-dashboard/)
+[Deployed on GitHub pages](https://jre23.github.io/weather-dashboard)
 
 ## Screenshots:
 
