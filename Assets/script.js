@@ -1,4 +1,6 @@
+// set this Boolean to false because a button hasn't been clicked yet when the page first loads or is refreshed
 var clickBool = false;
+// event handlers for clicks on the search button or clicks on the search history list 
 $("#find-city").on("click", function () {
     clickBool = true;
     createWeatherData();
@@ -7,28 +9,25 @@ $("#search-history").on("click", function () {
     clickBool = true;
     createWeatherData();
 });
-// this function is called either by the click on the search button, the click on the search history buttons, or when the page is refreshed and there is something in local storage
+// this function is called either by the click on the search button, the clicks on the search history list, or when the page is refreshed and there is something in local storage
 function createWeatherData() {
-    // get userInputCity
+    // get userInputCity by checking what invoked this function
+    // page refreshed, search button click, search history list click, else return
     if (localStorage.length !== 0 && !$("#city-input").val() && !clickBool) {
-        console.log("page refreshed");
         var userInputCity = localStorage.getItem(localStorage.length - 1);
-    } else if (event.target.value === "City Search" && clickBool) {
+    } else if (event.target.matches("button") || event.target.matches("i") && clickBool) {
         event.preventDefault();
         var userInputCity = $("#city-input").val().toLowerCase().trim();
-        console.log("city search button click: " + event.target.value);
     } else if (event.target.matches("li") && clickBool) {
-        console.log("search history button click: " + event.target.getAttribute("data-city"));
         var userInputCity = event.target.getAttribute("data-city").toLowerCase().trim();;
     } else {
         return;
     }
-
     // if an empty input is submitted, break out of this function
     if (userInputCity === "") {
         return;
     }
-    // store the city in local storage if not already stored
+    // the localStorageBool keeps track of whether the city is in local storage or not. if local storage is empty, add the city into the list. else run through local storage to check if the city is stored.
     let localStorageBool = false;
     if (localStorage.length === 0) {
         localStorage.setItem(0, userInputCity);
@@ -41,6 +40,7 @@ function createWeatherData() {
             }
         }
     }
+    // add the city to local storage if not already stored
     if (!localStorageBool) {
         localStorage.setItem(localStorage.length, userInputCity);
         createSearchHistory();
@@ -55,8 +55,6 @@ function createWeatherData() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        // check the response
-        console.log(response);
         // get current date. the response returns the date and time in unix. these next couple lines of code convert it to a standard format
         let currentDateUnix = response.dt;
         let currentDateMilliseconds = currentDateUnix * 1000;
@@ -69,7 +67,6 @@ function createWeatherData() {
         // get lat and lon coordinates for the second AJAX call for the uv index and forecast 
         let lat = response.coord.lat;
         let lon = response.coord.lon;
-
         // attach info to html
         $(".city-date").text(response.name + " (" + currentDateConverted + ")");
         $(".city-date")
@@ -82,7 +79,6 @@ function createWeatherData() {
         // the response returns wind speed in meters/second. convert meters/second to miles/hour with 2.237
         $(".wind-speed").text("Wind Speed: " + ((response.wind.speed) * 2.237).toFixed(1) +
             " MPH");
-
         // build the URL for the second AJAX call
         let forecastQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat +
             "&lon=" + lon + "&exclude=current,minutely,hourly&appid=" + APIKey;
@@ -91,14 +87,13 @@ function createWeatherData() {
             url: forecastQueryURL,
             method: "GET"
         }).then(function (responseForecast) {
-            // check the response
-            console.log(responseForecast);
             // get the uv index
             $(".uv-index").text(responseForecast.daily[0].uvi);
-            createUVIndex(responseForecast.daily[0].uvi);
-
+            // call createUVIndexColor function to determine background color depending on uv index 
+            createUVIndexColor(responseForecast.daily[0].uvi);
             // clear current forecast information before adding new information 
             $(".forecast").empty();
+            // for loop to create 5-day forecast 
             for (let i = 1; i < 6; i++) {
                 // get date and append
                 $(".forecast-date-" + i).append(new Date(responseForecast.daily[i].dt *
@@ -119,13 +114,12 @@ function createWeatherData() {
             }
         });
     });
-    console.log($("#city-input").val());
+    // clear input field after createWeatherData function call
     $("#city-input").val("");
 }
-// create uv index background color
-function createUVIndex(x) {
-    console.log("test createUVIndex parameter: " + x);
-    //  these if statements change the background color for the UV Index depending on the severity (low: 1-2, moderate: 3-5, high: 6-7, very high: 8-10, extreme: 11+)
+// this function determines the background color depending on the uv index
+function createUVIndexColor(x) {
+    //  these if statements determine the background color for the uv index depending on the severity (low: 1-2, moderate: 3-5, high: 6-7, very high: 8-10, extreme: 11+)
     if (x >= 1.00 && x <= 2.99) {
         $("#uvIndexBG").attr("style", "background-color:rgb(67, 185, 30);");
     } else if (x >= 3.00 && x <= 5.99) {
@@ -141,9 +135,9 @@ function createUVIndex(x) {
 // create search history list from local storage
 function createSearchHistory() {
     $("#search-history").empty();
-    let capLetter = "";
     let newString = "";
     for (let i = 0; i < localStorage.length; i++) {
+        // call capLetters function to properly case the cities
         newString = capLetters(localStorage.getItem(i));
         let cityLi = $("<li>");
         cityLi.attr("data-city", newString);
@@ -163,7 +157,7 @@ function capLetters(str) {
     }
     return newString.trim();
 }
-// if the page is refreshed, render the search history and weather data for the last item in local storage if local storage is not empty 
+// if the page is refreshed, render the search history list and weather data for the last item in local storage if local storage is not empty 
 if (localStorage.length !== 0) {
     createSearchHistory();
     createWeatherData();

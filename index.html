@@ -5,15 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
-
+    <!-- bootstrap link  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- font awesome link for search button icon  -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- local css link  -->
     <link rel="stylesheet" href="./Assets/style.css" />
 </head>
 
 <body>
+    <!-- header with the title and no links  -->
     <header>
         <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center mb-0 pb-4">
             <span> Weather Dashboard </span>
@@ -29,7 +32,7 @@
                 <form id="city-form" class="col-12 form-inline pl-0 pb-3">
                     <input type="text" id="city-input" class="col-8 form-control">
                     <!-- this button will trigger AJAX call -->
-                    <button id="find-city" type="submit" class="btn btn-primary searchBtn" value="City Search">
+                    <button id="find-city" type="submit" class="btn btn-primary searchBtn">
                         <i class="fas fa-search"></i></button>
                 </form>
                 <!-- search history buttons. will also trigger AJAX call -->
@@ -47,36 +50,37 @@
                         <div class="wind-speed mb-3">Wind Speed: </div>
                         <div class="mb-3">UV Index:
                             <span id="uvIndexBG" class="uv-index badge text-black p-2"></span>
+                            <!-- the span above will hold the badge for uv index background color -->
                         </div>
                     </section>
                     <!-- forecast weather data  -->
                     <section class="col-12 mt-4">
                         <h4>5-Day Forecast:</h4>
-                        <div class="card text-white bg-primary mb-3 mr-3 mr-md-4 cardStyle">
+                        <div class="card text-white bg-primary mb-2 mb-md-4 mr-2 mr-md-4 cardStyle">
                             <div class="card-body pt-2 pr-4 mr-1 pl-2 pb-0">
                                 <h5 class="forecast forecast-date-1"></h5>
                                 <p class="forecast forecast-1 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3 mr-3 mr-md-4 cardStyle">
+                        <div class="card text-white bg-primary mb-2 mb-md-4 mr-2 mr-md-4 cardStyle">
                             <div class="card-body pt-2 pr-4 mr-1 pl-2 pb-0">
                                 <h5 class="forecast forecast-date-2"></h5>
                                 <p class="forecast forecast-2 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3 mr-3 mr-md-4 cardStyle">
+                        <div class="card text-white bg-primary mb-2 mb-md-4 mr-2 mr-md-4 cardStyle">
                             <div class="card-body pt-2 pr-4 mr-1 pl-2 pb-0">
                                 <h5 class="forecast forecast-date-3"></h5>
                                 <p class="forecast forecast-3 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3 mr-3 mr-md-4 cardStyle">
+                        <div class="card text-white bg-primary mb-2 mb-md-4 mr-2 mr-md-4 cardStyle">
                             <div class="card-body pt-2 pr-4 mr-1 pl-2 pb-0">
                                 <h5 class="forecast forecast-date-4"></h5>
                                 <p class="forecast forecast-4 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3 mr-3 mr-md-4 cardStyle">
+                        <div class="card text-white bg-primary mb-2 mb-md-4 mr-2 mr-md-4 cardStyle">
                             <div class="card-body pt-2 pr-4 mr-1 pl-2 pb-0">
                                 <h5 class="forecast forecast-date-5"></h5>
                                 <p class="forecast forecast-5 mb-1"></p>
@@ -88,9 +92,10 @@
         </div>
     </main>
 
-    <!-- jQuery library -->
+    <!-- jQuery library link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="Assets/script.js"></script>
+    <!-- local script link -->
+    <script type="text/javascript" src="Assets/script.js"> </script>
 
 </body>
 
