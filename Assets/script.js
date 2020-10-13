@@ -70,9 +70,12 @@ function createWeatherData() {
         // attach info to html
         $(".city-date").text(response.name + " (" + currentDateConverted + ")");
         $(".city-date")
-            .append($("<img>").attr("src", "https://openweathermap.org/img/wn/" +
-                currentWeatherIcon +
-                "@2x.png"));
+            .append($("<img>").attr({
+                src: "https://openweathermap.org/img/wn/" +
+                    currentWeatherIcon +
+                    "@2x.png",
+                alt: "icon representation of weather conditions"
+            }));
         $(".temperature").text("Temperature: " +
             tempF + "\u00B0F");
         $(".humidity").text("Humidity: " + response.main.humidity + "%");
@@ -100,10 +103,12 @@ function createWeatherData() {
                         1000)
                     .toLocaleDateString("en-US") + "<br>");
                 // get icon and append
-                $(".forecast-" + i).append($("<img>").attr("src",
-                    "https://openweathermap.org/img/wn/" + responseForecast
-                    .daily[i].weather[0].icon +
-                    "@2x.png"));
+                $(".forecast-" + i).append($("<img>").attr({
+                    src: "https://openweathermap.org/img/wn/" + responseForecast
+                        .daily[i].weather[0].icon +
+                        "@2x.png",
+                    alt: "icon representation of weather conditions"
+                }));
                 // get temperature and append
                 $(".forecast-" + i).append("<br>Temp: " + ((responseForecast.daily[i].temp
                         .day - 273.15) *
