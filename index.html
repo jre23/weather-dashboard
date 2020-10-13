@@ -15,7 +15,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center mb-0">
+        <nav class="navbar navbar-dark bg-dark text-white h1 justify-content-center mb-0 pb-4">
             <span> Weather Dashboard </span>
         </nav>
     </header>
@@ -23,7 +23,7 @@
     <main class="container col-12">
         <div class="row">
             <!-- search input and search history column -->
-            <section class="col-3 bg1">
+            <section class="col-12 col-sm-5 col-md-3 bg1">
                 <h4>Search for a City:</h4>
                 <!-- this form is used to get the user input -->
                 <form id="city-form" class="col-12 form-inline pl-0 pb-3">
@@ -37,7 +37,7 @@
                 <ul id="search-history" class="list-group"></ul>
             </section>
             <!-- weather data column  -->
-            <section class="col-9">
+            <section class="col-12 col-sm-7 col-md-9">
                 <div class="row">
                     <!-- current day weather data  -->
                     <section class="col-12 ml-3 mt-3 pb-4 list-group-item">
@@ -53,7 +53,30 @@
                     <!-- forecast weather data  -->
                     <section class="col-12 mt-4">
                         <h3>5-Day Forecast:</h3>
-                        <div class="forecast">
+                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
+                            <div class="card-body forecast forecast-1">
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
+                            <div class="card-body  forecast forecast-2">
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
+                            <div class="card-body  forecast forecast-3">
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
+                            <div class="card-body  forecast forecast-4">
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
+                            <div class="card-body  forecast forecast-5">
+                                <p class="card-text"></p>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -168,20 +191,20 @@
                     $(".forecast").empty();
                     for (let i = 1; i < 6; i++) {
                         // get date and append
-                        $(".forecast").append(new Date(responseForecast.daily[i].dt *
+                        $(".forecast-" + i).append(new Date(responseForecast.daily[i].dt *
                                 1000)
                             .toLocaleDateString("en-US") + "<br>");
                         // get icon and append
-                        $(".forecast").append($("<img>").attr("src",
+                        $(".forecast-" + i).append($("<img>").attr("src",
                             "https://openweathermap.org/img/wn/" + responseForecast
                             .daily[i].weather[0].icon +
                             "@2x.png"));
                         // get temperature and append
-                        $(".forecast").append("<br>Temp: " + ((responseForecast.daily[i].temp
+                        $(".forecast-" + i).append("<br>Temp: " + ((responseForecast.daily[i].temp
                                 .day - 273.15) *
                             1.80 + 32).toFixed(1) + " \u00B0F<br>");
                         // get humidity and append
-                        $(".forecast").append("Humidity: " + responseForecast.daily[i]
+                        $(".forecast-" + i).append("Humidity: " + responseForecast.daily[i]
                             .humidity + "%<br>");
                     }
                 });
