@@ -2,7 +2,7 @@
 
 ## Description
 
-The goal for this project was to build a weather dashboard using the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The user can input and submit a search for a city and the current day's weather will show up along with a 5-day forecast for that particular city. 
+The goal for this project was to build a weather dashboard using the [OpenWeather API](https://openweathermap.org/api). The user can input and submit a search for a city and the current day's weather will be displayed along with a 5-day forecast for that particular city. The user's search history is kept in a list and also displayed once a search is done. The user may click on a city in the search history list to display that city's weather data again.
 
 ## Check it out here! 
 
@@ -12,9 +12,11 @@ The goal for this project was to build a weather dashboard using the [OpenWeathe
 
 ## Screenshots:
 
-![weather dashboard screenshot 1]
+![weather dashboard screenshot 1](https://user-images.githubusercontent.com/69170823/95823077-dd01f500-0ce1-11eb-9d17-702105428a04.png)
 
-![weather dashboard screenshot 2]
+![weather dashboard screenshot 2](https://user-images.githubusercontent.com/69170823/95823200-0884df80-0ce2-11eb-91d7-f835d756f647.png)
+
+![weather dashboard screenshot 3](https://user-images.githubusercontent.com/69170823/95823282-26eadb00-0ce2-11eb-9f80-8514bebcbed9.png)
 
 ## Installation
 
