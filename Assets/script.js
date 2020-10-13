@@ -167,3 +167,11 @@ if (localStorage.length !== 0) {
     createSearchHistory();
     createWeatherData();
 }
+
+// check for ajax request errors. if error, alert the user and remove last searched item from local storage because it must be invalid
+$(document).ajaxError(function () {
+    console.log("error function call test");
+    alert("The city you've inputted is not valid or not in the database!");
+    localStorage.removeItem(localStorage.length - 1);
+    createSearchHistory();
+});
