@@ -169,7 +169,6 @@ if (localStorage.length !== 0) {
 }
 // check for ajax request errors. if error, alert the user and remove last searched item from local storage because it must be invalid
 $(document).ajaxError(function () {
-    console.log("error function call test");
     alert("The city you've searched for is not valid or not in the database!");
     localStorage.removeItem(localStorage.length - 1);
     createSearchHistory();
