@@ -11,6 +11,12 @@ img {
     border-radius: 15%;
 }
 
-.bg1 {
+.backgroundColor {
     background-color: rgb(248, 249, 250);
+}
+
+.cardStyle {
+    max-width: 9rem;
+    display: inline-block;
+    line-height: 37px;
 }

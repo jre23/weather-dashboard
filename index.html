@@ -23,8 +23,8 @@
     <main class="container col-12">
         <div class="row">
             <!-- search input and search history column -->
-            <section class="col-12 col-sm-5 col-md-3 bg1">
-                <h4>Search for a City:</h4>
+            <section class="col-12 col-sm-5 col-md-3 backgroundColor">
+                <h5>Search for a City:</h5>
                 <!-- this form is used to get the user input -->
                 <form id="city-form" class="col-12 form-inline pl-0 pb-3">
                     <input type="text" id="city-input" class="col-8 form-control">
@@ -52,30 +52,35 @@
                     </section>
                     <!-- forecast weather data  -->
                     <section class="col-12 mt-4">
-                        <h3>5-Day Forecast:</h3>
-                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
-                            <div class="card-body forecast forecast-1">
-                                <p class="card-text"></p>
+                        <h4>5-Day Forecast:</h4>
+                        <div class="card text-white bg-primary mb-3 mr-4 cardStyle">
+                            <div class="card-body pt-2 pr-4 pl-2 pb-0">
+                                <h5 class="forecast forecast-date-1"></h5>
+                                <p class="forecast forecast-1 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
-                            <div class="card-body  forecast forecast-2">
-                                <p class="card-text"></p>
+                        <div class="card text-white bg-primary mb-3 mr-4 cardStyle">
+                            <div class="card-body pt-2 pr-4 pl-2 pb-0">
+                                <h5 class="forecast forecast-date-2"></h5>
+                                <p class="forecast forecast-2 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
-                            <div class="card-body  forecast forecast-3">
-                                <p class="card-text"></p>
+                        <div class="card text-white bg-primary mb-3 mr-4 cardStyle">
+                            <div class="card-body pt-2 pr-4 pl-2 pb-0">
+                                <h5 class="forecast forecast-date-3"></h5>
+                                <p class="forecast forecast-3 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
-                            <div class="card-body  forecast forecast-4">
-                                <p class="card-text"></p>
+                        <div class="card text-white bg-primary mb-3 mr-4 cardStyle">
+                            <div class="card-body pt-2 pr-4 pl-2 pb-0">
+                                <h5 class="forecast forecast-date-4"></h5>
+                                <p class="forecast forecast-4 mb-1"></p>
                             </div>
                         </div>
-                        <div class="card text-white bg-primary mb-3" style="max-width: 10rem;">
-                            <div class="card-body  forecast forecast-5">
-                                <p class="card-text"></p>
+                        <div class="card text-white bg-primary mb-3 mr-4 cardStyle">
+                            <div class="card-body pt-2 pr-4 pl-2 pb-0">
+                                <h5 class="forecast forecast-date-5"></h5>
+                                <p class="forecast forecast-5 mb-1"></p>
                             </div>
                         </div>
                     </section>
@@ -190,8 +195,9 @@
                     // clear current forecast information before adding new information 
                     $(".forecast").empty();
                     for (let i = 1; i < 6; i++) {
+                        console.log(i);
                         // get date and append
-                        $(".forecast-" + i).append(new Date(responseForecast.daily[i].dt *
+                        $(".forecast-date-" + i).append(new Date(responseForecast.daily[i].dt *
                                 1000)
                             .toLocaleDateString("en-US") + "<br>");
                         // get icon and append
@@ -202,7 +208,7 @@
                         // get temperature and append
                         $(".forecast-" + i).append("<br>Temp: " + ((responseForecast.daily[i].temp
                                 .day - 273.15) *
-                            1.80 + 32).toFixed(1) + " \u00B0F<br>");
+                            1.80 + 32).toFixed(2) + " \u00B0F<br>");
                         // get humidity and append
                         $(".forecast-" + i).append("Humidity: " + responseForecast.daily[i]
                             .humidity + "%<br>");
