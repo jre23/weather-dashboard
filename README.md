@@ -12,7 +12,7 @@ The goal for this project was to build a weather dashboard using the [OpenWeathe
 
 ## Screenshots:
 
-![weather dashboard screenshot 1](https://user-images.githubusercontent.com/69170823/95824653-89dd7180-0ce4-11eb-94d8-a2696d4198df.png)
+![weather dashboard screenshot 1](https://user-images.githubusercontent.com/69170823/95930470-631e4a00-0d7b-11eb-902a-3903587768e7.png)
 
 ![weather dashboard screenshot 2](https://user-images.githubusercontent.com/69170823/95823077-dd01f500-0ce1-11eb-9d17-702105428a04.png)
 
